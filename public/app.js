@@ -56,10 +56,12 @@ const FAVORITES_KEY='camtrauio.favorites.v1';
 let favorites=[];
 let storageAvailable=true;
 try {
- const parsed=JSON.parse(localStorage.getItem(FAVORITES_KEY)||'[]');
+ const raw=localStorage.getItem(FAVORITES_KEY);
+ let parsed=[];
+ try { parsed=JSON.parse(raw||'[]'); } catch { /* Ignore malformed local favorites. */ }
  if(Array.isArray(parsed)) favorites=parsed.filter(f=>f&&Object.hasOwn(places,f.origin)&&Object.hasOwn(places,f.destination)&&f.origin!==f.destination).slice(0,6).map(f=>({origin:f.origin,destination:f.destination}));
 } catch { storageAvailable=false; }
-function persistFavorites(){try{localStorage.setItem(FAVORITES_KEY,JSON.stringify(favorites));return true;}catch{storageAvailable=false;return false;}}
+function persistFavorites(){try{localStorage.setItem(FAVORITES_KEY,JSON.stringify(favorites));storageAvailable=true;return true;}catch{storageAvailable=false;return false;}}
 function renderFavorites(){
  const same=$('#origin').value===$('#destination').value;
  const existing=favorites.some(f=>f.origin===$('#origin').value&&f.destination===$('#destination').value);
