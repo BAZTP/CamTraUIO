@@ -1,0 +1,12 @@
+{
+  "name": "camtrauio",
+  "private": true,
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check server.mjs && node --check public/app.js && node --check scripts/export.mjs",
+    "build": "node scripts/export.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
